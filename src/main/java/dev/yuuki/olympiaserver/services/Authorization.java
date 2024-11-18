@@ -27,20 +27,26 @@ public class Authorization {
 	private final UserManager userManager;
 	private final Algorithm key;
 	private final JWTVerifier verifier;
+	private final String jwtIssuer;
 
-	public Authorization(UserManager userManager, @Value("${jwt.secret}") final String jwtSecret) {
+	public Authorization(
+			final UserManager userManager,
+			@Value("${jwt.secret}") final String jwtSecret,
+			@Value("${jwt.issuer}") final String jwtIssuer
+	) {
 		this.userManager = userManager;
 		this.key = Algorithm.HMAC512(jwtSecret);
-		this.verifier = JWT.require(this.key).withIssuer("dev.yuuki.olympiaserver").build();
+		this.jwtIssuer = jwtIssuer;
+		this.verifier = JWT.require(this.key).withIssuer(jwtIssuer).build();
 	}
 
 	public String generateToken(UUID userId, String loginCode) throws LoginException {
 		User targetUser = userManager.getUser(userId);
-		if (targetUser == null) throw new LoginException("Không tìm thấy người dùng");
-		if (!targetUser.validateLoginCode(loginCode)) throw new LoginException("Sai mã đăng nhập");
+		if (targetUser == null) throw new LoginException("User not found");
+		if (!targetUser.validateLoginCode(loginCode)) throw new LoginException("Wrong login code");
 		return JWT.create()
 				.withPayload(generatePayload(userId, loginCode))
-				.withIssuer("dev.yuuki.olympiaserver")
+				.withIssuer(jwtIssuer)
 				.sign(key);
 	}
 

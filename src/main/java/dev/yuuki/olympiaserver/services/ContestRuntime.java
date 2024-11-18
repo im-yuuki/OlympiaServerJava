@@ -53,14 +53,14 @@ public class ContestRuntime {
 		public void increaseScore(int amount) {
 			if (amount < 0) return;
 			score += amount;
-			logger.info("Contestant \"%s\" score: +%d -> %d".formatted(user.name, amount, score));
+			logger.info("[%s] score: %d (+%d)".formatted(user.name, score, amount));
 		}
 
 		public void decreaseScore(int amount) {
 			if (amount < 0) return;
 			score -= amount;
 			if (score < 0) score = 0;
-			logger.info("Contestant \"%s\" score: -%d -> %d".formatted(user.name, amount, score));
+			logger.info("[%s] score: %d (-%d)".formatted(user.name, score, amount));
 		}
 
 	}

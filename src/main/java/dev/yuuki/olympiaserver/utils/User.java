@@ -23,7 +23,7 @@ public class User {
 
 	public void resetLoginCode() {
 		loginCode = Tools.randomLoginCode();
-		logger.info("Login to \"%s\" with code: %s".formatted(name, loginCode));
+		System.out.printf("# [%s] login code: %s\n", name, loginCode);
 	}
 
 }

@@ -31,9 +31,9 @@ public class UserInterface {
         }
         try {
             switch (authorization.validateUser(token).role) {
-                case ADMINISTRATOR: return new RedirectView("./ui/admin.html");
-                case CONTESTANT: return new RedirectView("./ui/contestant.html");
-                case VIEWER: return new RedirectView("./ui/viewer.html");
+                case ADMINISTRATOR: return new RedirectView("./admin.html");
+                case CONTESTANT: return new RedirectView("./contestant.html");
+                case VIEWER: return new RedirectView("./viewer.html");
                 default: return new RedirectView("./login.html");
             }
         } catch (Exception ignored) {

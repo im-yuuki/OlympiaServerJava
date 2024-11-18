@@ -24,7 +24,10 @@ public class Login {
 	private final Authorization authorization;
 	private final UserManager userManager;
 
-	public Login(Authorization authorization, UserManager userManager) {
+	public Login(
+			final Authorization authorization,
+			final UserManager userManager
+	) {
 		this.authorization = authorization;
 		this.userManager = userManager;
 	}
@@ -49,7 +52,10 @@ public class Login {
 	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody LoginRequestBody body) {
 		try {
 			String token = authorization.generateToken(body.getTargetUserUuid(), body.getPassword());
-			logger.info("New login from %s to account %s".formatted(request.getRemoteAddr(), body.getTargetUserUuid()));
+			logger.info("Authorized a client accessing [%s] from %s".formatted(
+					userManager.getName(body.getTargetUserUuid()),
+					request.getRemoteAddr()
+			));
 			return ResponseEntity
 					.status(200)
 					.contentType(MediaType.APPLICATION_JSON)

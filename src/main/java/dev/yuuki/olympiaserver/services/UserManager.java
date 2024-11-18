@@ -24,7 +24,6 @@ public class UserManager {
 	}
 
 	public UserManager() {
-		// Add admin and viewer entities
 		addUser("Quản trị viên", Role.ADMINISTRATOR);
 		for (int i = 1; i < 5; i++) addUser("Thí sinh " + i, Role.CONTESTANT);
 		addUser("Người xem", Role.VIEWER);
@@ -33,6 +32,10 @@ public class UserManager {
 	@Nullable
 	public User getUser(UUID userId) {
 		return users.get(userId);
+	}
+
+	public String getName(UUID userId) {
+		return users.get(userId).name;
 	}
 
 	public UUID[] getAllUserIds () {

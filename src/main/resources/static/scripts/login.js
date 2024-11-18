@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.cookie = "Authorization=";
-
     const reloadButton = document.getElementById("reload");
     const submitButton = document.getElementById("submit");
     const userField = document.getElementById("user");
@@ -25,12 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
     function reloadUser() {
         disableAction();
         reloadButton.textContent = "Vui lòng chờ";
+        userField.innerHTML = "";
+        let blankOption = document.createElement("option");
+        blankOption.value = "";
+        blankOption.innerText = "-- Chọn tài khoản --";
+        userField.appendChild(blankOption);
         $.ajax({
             url: "/api/accounts",
             method: "GET",
             timeout: 3000,
             success: function (response) {
-                userField.innerHTML = "";
+
                 response.forEach(function(element) {
                     let option = document.createElement("option");
                     option.value = element.id;
@@ -40,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 let error = jqXHR.responseText;
-                if (error == undefined || error == "") error = errorThrown;
+                if (error === undefined || error === "") error = errorThrown;
                 toastr.error("Lấy danh sách tài khoản thất bại: " + error);
             }
         }).always(enableAction);
@@ -51,11 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("login-form").addEventListener("submit", function submit(event) {
         event.preventDefault();
-        if (userField.value.length != 36) {
+        if (userField.value.length !== 36) {
             toastr.warning("Vui lòng kiểm tra lại tài khoản đăng nhập");
             return;
         }
-        if (passwordField.value.length != 6) {
+        if (passwordField.value.length !== 6) {
             toastr.warning("Vui lòng kiểm tra lại mã đăng nhập");
             return;
         }
@@ -77,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 let error = jqXHR.responseText;
-                if (error == undefined || error == "") error = errorThrown;
+                if (error === undefined || error === "") error = errorThrown;
                 toastr.error("Đăng nhập thất bại: " + error);
             }
         }).always(enableAction);
